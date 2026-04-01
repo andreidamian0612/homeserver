@@ -182,20 +182,6 @@ services:
       - portainer_data:/data
 
 
-  kavita:
-    image: jvmilazz0/kavita:latest
-    container_name: kavita
-    restart: unless-stopped
-    ports:
-      - "5000:5000"
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${CONFIG_DIR}/kavita:/kavita/config
-      - ${MEDIA_DIR}/books:/books
-      - ${MEDIA_DIR}/comics:/comics
-    networks:
-      - mediaserver
 
 volumes:
   portainer_data:
