@@ -141,6 +141,36 @@ services:
     networks:
       - mediaserver
 
+  mixarr:
+    image: ghcr.io/aquantumofdonuts/mixarr:latest
+    container_name: mixarr
+    restart: unless-stopped
+    ports:
+      - "3010:80"
+      - "3443:443"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - SESSION_SECRET=${MIXARR_SESSION_SECRET}
+      - BASE_URL=${MIXARR_BASE_URL}
+    volumes:
+      - ${CONFIG_DIR}/mixarr:/config
+    networks:
+      - mediaserver
+
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_DIR}/homeassistant:/config
+      - /dev:/dev
+
   portainer:
     image: portainer/portainer-ce:lts
     container_name: portainer
