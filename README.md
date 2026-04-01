@@ -17,6 +17,15 @@ Home server stack running on Debian 13 with Docker.
 | Bazarr | 6767 | Subtitle management (Romanian + English) |
 | Mixarr | 3010/3443 | Music discovery for Lidarr |
 
+### Books & Comics
+| Service | Port | Purpose |
+|---------|------|---------|
+| Kavita | 5000 | Book and comic reader |
+
+Drop files into these folders and Kavita serves them automatically:
+- **Books**: `/media/storage/books/` (epub, pdf, mobi)
+- **Comics**: `/media/storage/comics/` (cbz, cbr, pdf)
+
 ### Smart Home
 | Service | Port | Purpose |
 |---------|------|---------|
@@ -80,7 +89,7 @@ Home server stack running on Debian 13 with Docker.
 1. Copy `.env.example` to `.env` and adjust paths
 2. Create media directories:
    ```bash
-   mkdir -p /media/storage/{movies,tv,music,downloads,books}
+   mkdir -p /media/storage/{movies,tv,music,downloads,books,comics}
    ```
 3. Create config directory:
    ```bash
@@ -96,23 +105,17 @@ Home server stack running on Debian 13 with Docker.
 
 ```
 /media/storage/
-  movies/
-  tv/
-  music/
-  downloads/
-  books/
+  movies/          <- Radarr imports here, Jellyfin reads
+  tv/              <- Sonarr imports here, Jellyfin reads
+  music/           <- Lidarr imports here, Jellyfin reads
+  downloads/       <- qBittorrent downloads here
+  books/           <- Drop ebooks here, Kavita reads
+  comics/          <- Drop comics here, Kavita reads
 
 /opt/mediaserver/
-  config/
-    jellyfin/
-    radarr/
-    sonarr/
-    lidarr/
-    prowlarr/
-    qbittorrent/
-    jellyseerr/
-    bazarr/
-    mixarr/
-    homeassistant/
+  config/          <- All service configs
   docker-compose.yml
+  setup.log
+  apikeys.txt
+  CLAUDE.md
 ```

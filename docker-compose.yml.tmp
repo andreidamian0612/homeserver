@@ -13,14 +13,14 @@ services:
     ports:
       - "8096:8096"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/jellyfin:/config
-      - ${MEDIA_DIR}/movies:/data/movies
-      - ${MEDIA_DIR}/tv:/data/tv
-      - ${MEDIA_DIR}/music:/data/music
+      - /opt/mediaserver/config/jellyfin:/config
+      - /media/storage/movies:/data/movies
+      - /media/storage/tv:/data/tv
+      - /media/storage/music:/data/music
     networks:
       - mediaserver
 
@@ -31,13 +31,13 @@ services:
     ports:
       - "7878:7878"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/radarr:/config
-      - ${MEDIA_DIR}/movies:/movies
-      - ${MEDIA_DIR}/downloads:/downloads
+      - /opt/mediaserver/config/radarr:/config
+      - /media/storage/movies:/movies
+      - /media/storage/downloads:/downloads
     networks:
       - mediaserver
 
@@ -48,13 +48,13 @@ services:
     ports:
       - "8989:8989"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/sonarr:/config
-      - ${MEDIA_DIR}/tv:/tv
-      - ${MEDIA_DIR}/downloads:/downloads
+      - /opt/mediaserver/config/sonarr:/config
+      - /media/storage/tv:/tv
+      - /media/storage/downloads:/downloads
     networks:
       - mediaserver
 
@@ -65,13 +65,13 @@ services:
     ports:
       - "8686:8686"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/lidarr:/config
-      - ${MEDIA_DIR}/music:/music
-      - ${MEDIA_DIR}/downloads:/downloads
+      - /opt/mediaserver/config/lidarr:/config
+      - /media/storage/music:/music
+      - /media/storage/downloads:/downloads
     networks:
       - mediaserver
 
@@ -82,11 +82,11 @@ services:
     ports:
       - "9696:9696"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/prowlarr:/config
+      - /opt/mediaserver/config/prowlarr:/config
     networks:
       - mediaserver
 
@@ -99,13 +99,13 @@ services:
       - "6881:6881"
       - "6881:6881/udp"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
       - WEBUI_PORT=8080
     volumes:
-      - ${CONFIG_DIR}/qbittorrent:/config
-      - ${MEDIA_DIR}/downloads:/downloads
+      - /opt/mediaserver/config/qbittorrent:/config
+      - /media/storage/downloads:/downloads
     networks:
       - mediaserver
 
@@ -116,11 +116,11 @@ services:
     ports:
       - "5055:5055"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/jellyseerr:/app/config
+      - /opt/mediaserver/config/jellyseerr:/app/config
     networks:
       - mediaserver
 
@@ -131,13 +131,13 @@ services:
     ports:
       - "6767:6767"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/bazarr:/config
-      - ${MEDIA_DIR}/movies:/movies
-      - ${MEDIA_DIR}/tv:/tv
+      - /opt/mediaserver/config/bazarr:/config
+      - /media/storage/movies:/movies
+      - /media/storage/tv:/tv
     networks:
       - mediaserver
 
@@ -149,13 +149,13 @@ services:
       - "3010:80"
       - "3443:443"
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - SESSION_SECRET=${MIXARR_SESSION_SECRET}
-      - BASE_URL=${MIXARR_BASE_URL}
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
+      - SESSION_SECRET=b5b8be0e0ff7ee95616bc70197a1d406916c79648a0bb759f581679e98143fc0
+      - BASE_URL=http://192.168.101.81:3010
     volumes:
-      - ${CONFIG_DIR}/mixarr:/data
+      - /opt/mediaserver/config/mixarr:/data
     networks:
       - mediaserver
 
@@ -166,9 +166,9 @@ services:
     privileged: true
     network_mode: host
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/homeassistant:/config
+      - /opt/mediaserver/config/homeassistant:/config
       - /dev:/dev
 
   portainer:
@@ -189,11 +189,11 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Bucharest
     volumes:
-      - ${CONFIG_DIR}/kavita:/kavita/config
-      - ${MEDIA_DIR}/books:/books
-      - ${MEDIA_DIR}/comics:/comics
+      - /opt/mediaserver/config/kavita:/kavita/config
+      - /media/storage/books:/books
+      - /media/storage/comics:/comics
     networks:
       - mediaserver
 
