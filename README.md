@@ -27,53 +27,31 @@ Home server stack running on Debian 13 with Docker.
 |---------|------|---------|
 | Portainer | 9443 | Docker management UI |
 
-## System Services (systemd)
-
-- **Docker** - container runtime
-- **Cloudflared** - Cloudflare tunnel (dmnsolutions.com)
-- **Tailscale** - VPN/mesh networking
-
 ## Hardware
 
 - **CPU**: Intel i5-6500T @ 2.50GHz
 - **GPU**: Intel HD Graphics 530 (QSV transcoding)
-- **Storage**: NVMe 477GB (OS) + SATA SSD 477GB (media at /media/storage)
+- **Storage**: NVMe 477GB (OS + media, single drive)
 - **Zigbee**: Nabu Casa SkyConnect v1.0 (USB)
 
-## Quality Profiles
+> **Note**: Original SATA SSD (512GB) died 2026-04-01 with "access beyond end of device" errors. All media now on NVMe. `/media/storage/` is a regular directory, not a separate mount.
 
-### Radarr/Sonarr - "HD Streaming"
-- Preferred: x264 1080p (+100 score)
-- Accepted: x265 (-50 score)
-- Blocked: HDR10, Dolby Vision, Remux (-10000 score)
-- Optimized for Intel HD 530 which lacks 10-bit HEVC hardware decoding
+## Directory Structure
 
-### Lidarr - "Music Quality"
-- Preferred: FLAC, ALAC (lossless)
-- Fallback: MP3-320, MP3-VBR-V0
+```
+/media/storage/          <- on NVMe (single drive setup)
+  movies/                <- Radarr imports here, Jellyfin reads
+  tv/                    <- Sonarr imports here, Jellyfin reads
+  music/                 <- Lidarr imports here, Jellyfin reads
+  downloads/             <- qBittorrent downloads here
 
-## Integrations
-
-- Prowlarr -> Radarr, Sonarr, Lidarr (indexer sync)
-- qBittorrent -> Radarr, Sonarr, Lidarr (download client)
-- Radarr/Sonarr/Lidarr -> Jellyfin (auto library scan on import)
-- Bazarr -> Radarr, Sonarr (auto subtitle download: Romanian + English)
-- Jellyseerr -> Jellyfin, Radarr, Sonarr (media requests)
-- Mixarr -> Lidarr (music discovery)
-- Home Assistant -> SkyConnect ZBT-1 (Zigbee coordinator via ZHA)
-
-## Cloudflare Tunnel
-
-- `media.dmnsolutions.com` -> Jellyfin (no Access protection, Jellyfin handles auth)
-- `requests.dmnsolutions.com` -> Jellyseerr (Cloudflare Access, email OTP)
-
-## Jellyfin Transcoding
-
-- Hardware acceleration: Intel QSV via VAAPI
-- GPU passthrough: /dev/dri
-- Hardware encoding: H264, HEVC (8-bit only)
-- Low-power encoders: enabled
-- 10-bit HEVC/HDR: software fallback (HD 530 limitation)
+/opt/mediaserver/
+  config/                <- All service configs
+  docker-compose.yml
+  setup.log
+  apikeys.txt
+  CLAUDE.md
+```
 
 ## Setup
 
@@ -82,29 +60,8 @@ Home server stack running on Debian 13 with Docker.
    ```bash
    mkdir -p /media/storage/{movies,tv,music,downloads}
    ```
-3. Create config directory:
-   ```bash
-   mkdir -p /opt/mediaserver/config
-   ```
-4. Start services:
+3. Start services:
    ```bash
    docker compose up -d
    ```
-5. Configure each service via its web UI
-
-## Directory Structure
-
-```
-/media/storage/
-  movies/          <- Radarr imports here, Jellyfin reads
-  tv/              <- Sonarr imports here, Jellyfin reads
-  music/           <- Lidarr imports here, Jellyfin reads
-  downloads/       <- qBittorrent downloads here
-
-/opt/mediaserver/
-  config/          <- All service configs
-  docker-compose.yml
-  setup.log
-  apikeys.txt
-  CLAUDE.md
-```
+4. Configure each service via its web UI
