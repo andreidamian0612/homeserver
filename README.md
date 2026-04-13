@@ -2,7 +2,7 @@
 
 Home server stack running on Debian 13 with Docker.
 
-## Services
+## Services (11 containers)
 
 ### Media Stack
 | Service | Port | Purpose |
@@ -14,7 +14,7 @@ Home server stack running on Debian 13 with Docker.
 | Lidarr | 8686 | Music management |
 | Prowlarr | 9696 | Indexer manager |
 | qBittorrent | 8080 | Torrent client |
-| Bazarr | 6767 | Subtitle management (Romanian + English) |
+| Bazarr | 6767 | Subtitle management (Romanian + English via OpenSubtitles + SubsRo) |
 | Mixarr | 3010/3443 | Music discovery for Lidarr |
 
 ### Smart Home
@@ -34,15 +34,19 @@ Home server stack running on Debian 13 with Docker.
 - **Storage**: NVMe 477GB (OS + media, single drive)
 - **Zigbee**: Nabu Casa SkyConnect v1.0 (USB)
 
-> **Note**: Original SATA SSD (512GB) died 2026-04-01 with "access beyond end of device" errors. All media now on NVMe. `/media/storage/` is a regular directory, not a separate mount.
+> **Note**: Original SATA SSD (512GB) died 2026-04-01. All media now on NVMe.
+
+## Volume Mapping
+
+All media containers mount `/media/storage` as `/data`, enabling hardlinks between downloads and media folders (saves disk space).
 
 ## Directory Structure
 
 ```
-/media/storage/          <- on NVMe (single drive setup)
-  movies/                <- Radarr imports here, Jellyfin reads
-  tv/                    <- Sonarr imports here, Jellyfin reads
-  music/                 <- Lidarr imports here, Jellyfin reads
+/media/storage/          <- on NVMe (single drive)
+  movies/                <- Radarr imports here
+  tv/                    <- Sonarr imports here
+  music/                 <- Lidarr imports here
   downloads/             <- qBittorrent downloads here
 
 /opt/mediaserver/
@@ -56,12 +60,6 @@ Home server stack running on Debian 13 with Docker.
 ## Setup
 
 1. Copy `.env.example` to `.env` and adjust paths
-2. Create media directories:
-   ```bash
-   mkdir -p /media/storage/{movies,tv,music,downloads}
-   ```
-3. Start services:
-   ```bash
-   docker compose up -d
-   ```
+2. Create directories: `mkdir -p /media/storage/{movies,tv,music,downloads}`
+3. Start: `docker compose up -d`
 4. Configure each service via its web UI
