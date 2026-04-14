@@ -36,8 +36,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_DIR}/radarr:/config
-      - ${MEDIA_DIR}/movies:/movies
-      - ${MEDIA_DIR}/downloads:/downloads
+      - ${MEDIA_DIR}:/data
     networks:
       - mediaserver
 
@@ -53,8 +52,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_DIR}/sonarr:/config
-      - ${MEDIA_DIR}/tv:/tv
-      - ${MEDIA_DIR}/downloads:/downloads
+      - ${MEDIA_DIR}:/data
     networks:
       - mediaserver
 
@@ -70,8 +68,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_DIR}/lidarr:/config
-      - ${MEDIA_DIR}/music:/music
-      - ${MEDIA_DIR}/downloads:/downloads
+      - ${MEDIA_DIR}:/data
     networks:
       - mediaserver
 
@@ -105,7 +102,7 @@ services:
       - WEBUI_PORT=8080
     volumes:
       - ${CONFIG_DIR}/qbittorrent:/config
-      - ${MEDIA_DIR}/downloads:/downloads
+      - ${MEDIA_DIR}:/data
     networks:
       - mediaserver
 
@@ -136,8 +133,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_DIR}/bazarr:/config
-      - ${MEDIA_DIR}/movies:/movies
-      - ${MEDIA_DIR}/tv:/tv
+      - ${MEDIA_DIR}:/data
     networks:
       - mediaserver
 
